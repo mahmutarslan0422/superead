@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Apple Liquid Glass - 15 Dakika Hızlı Okuma Pratiği</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: transparent !important;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #F4EBD0;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .widget-box {
+      position: fixed;
+      top: 40px;
+      left: 60px;
+      padding: 20px 22px 22px 22px;
+      border-radius: 34px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(14, 20, 26, 0.08) 100%
+      );
+      backdrop-filter: blur(8px) saturate(125%);
+      -webkit-backdrop-filter: blur(8px) saturate(125%);
+      box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.44),
+        0 3px 10px rgba(0, 0, 0, 0.22);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      user-select: none;
+      overflow: hidden;
+      transition: box-shadow 0.8s ease;
+    }
+
+    .widget-box:has(.glass-capsule.completed) {
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.48),
+        0 0 26px rgba(22, 184, 165, 0.28);
+    }
+
+    .widget-rim-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      pointer-events: none;
+      z-index: 4;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.24),
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.44),
+        inset 0 -1.5px 1.5px rgba(255, 255, 255, 0.20),
+        inset 0 0 6px 0.5px rgba(235, 245, 252, 0.22);
+      transition: box-shadow 0.8s ease;
+    }
+
+    .widget-box:has(.glass-capsule.completed) .widget-rim-overlay {
+      box-shadow:
+        inset 0 0 0 1px rgba(130, 255, 240, 0.45),
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.52),
+        inset 0 -1.5px 1.5px rgba(255, 255, 255, 0.26),
+        inset 0 0 6px 0.5px rgba(180, 255, 246, 0.28);
+    }
+
+    .widget-specular-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 34px;
+      padding: 1.25px;
+      background: linear-gradient(
+        165deg,
+        rgba(255, 255, 255, 0.42) 0%,
+        rgba(175, 248, 242, 0.52) 22%,
+        rgba(255, 255, 255, 0.88) 33%,
+        rgba(244, 235, 208, 0.52) 44%,
+        rgba(255, 255, 255, 0.14) 56%,
+        rgba(165, 245, 238, 0.36) 76%,
+        rgba(255, 255, 255, 0.65) 90%,
+        rgba(255, 255, 255, 0.26) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .main-row {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .percentage {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 76px;
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      color: #F4EBD0;
+      font-variant-numeric: tabular-nums;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.6s ease;
+    }
+
+    .percentage.completed {
+      color: #26D0BC;
+      transform: scale(1.03);
+    }
+
+    .labels {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .title {
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.2px;
+      color: #FFFFFF;
+    }
+
+    .timer-sub {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #F4EBD0;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.6s ease;
+    }
+
+    .timer-sub.completed {
+      color: #26D0BC;
+    }
+
+    .glass-capsule {
+      position: relative;
+      z-index: 2;
+      width: 320px;
+      height: 54px;
+      border-radius: 999px;
+      background: rgba(14, 20, 26, 0.16);
+      backdrop-filter: blur(18px) saturate(145%);
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
+      box-shadow:
+        0 15px 32px rgba(0, 0, 0, 0.46),
+        0 2px 6px rgba(0, 0, 0, 0.24);
+      overflow: hidden;
+      transition: box-shadow 0.8s ease;
+    }
+
+    .glass-capsule.completed {
+      box-shadow:
+        0 15px 34px rgba(0, 0, 0, 0.48),
+        0 0 22px rgba(22, 184, 165, 0.28);
+    }
+
+    .glass-rim-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 4;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.26),
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.42),
+        inset 0 -1.5px 1.5px rgba(255, 255, 255, 0.24),
+        inset 0 0 5px 0.5px rgba(235, 245, 252, 0.26);
+      transition: box-shadow 0.8s ease;
+    }
+
+    .glass-capsule.completed .glass-rim-overlay {
+      box-shadow:
+        inset 0 0 0 1px rgba(130, 255, 240, 0.48),
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.52),
+        inset 0 -1.5px 1.5px rgba(255, 255, 255, 0.28),
+        inset 0 0 5px 0.5px rgba(180, 255, 246, 0.32);
+    }
+
+    .glass-specular-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      padding: 1.25px;
+      background: linear-gradient(
+        170deg,
+        rgba(255, 255, 255, 0.26) 0%,
+        rgba(175, 248, 242, 0.58) 22%,
+        rgba(255, 255, 255, 0.92) 33%,
+        rgba(244, 235, 208, 0.60) 42%,
+        rgba(255, 255, 255, 0.18) 54%,
+        rgba(196, 186, 255, 0.38) 68%,
+        rgba(255, 255, 255, 0.72) 79%,
+        rgba(165, 245, 238, 0.48) 88%,
+        rgba(255, 255, 255, 0.24) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .capsule-svg {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-box" id="widget">
+    <div class="main-row">
+      <div class="percentage" id="pct">0%</div>
+      <div class="labels">
+        <div class="title" id="title">15 Dakika<br>Hızlı Okuma Pratiği</div>
+        <div class="timer-sub" id="sub">Kalan Süre → 15:00</div>
+      </div>
+    </div>
+
+    <div class="glass-capsule" id="capsule">
+      <svg class="capsule-svg" viewBox="0 0 320 54" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="trackClip">
+            <rect x="2" y="2" width="316" height="50" rx="25" ry="25" />
+          </clipPath>
+
+          <linearGradient id="turquoiseFrontGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#069E8D" stop-opacity="0.68" />
+            <stop offset="68%" stop-color="#0EBEA9" stop-opacity="0.70" />
+            <stop offset="100%" stop-color="#1FE0CA" stop-opacity="0.73" />
+          </linearGradient>
+
+          <linearGradient id="liquidDepthGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22" />
+            <stop offset="28%" stop-color="#FFFFFF" stop-opacity="0.0" />
+            <stop offset="78%" stop-color="#04473F" stop-opacity="0.0" />
+            <stop offset="100%" stop-color="#04473F" stop-opacity="0.14" />
+          </linearGradient>
+
+          <linearGradient id="smoothGlassVolume" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.24" />
+            <stop offset="14%" stop-color="#FFFFFF" stop-opacity="0.04" />
+            <stop offset="50%" stop-color="#000000" stop-opacity="0.0" />
+            <stop offset="86%" stop-color="#040B0E" stop-opacity="0.14" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.18" />
+          </linearGradient>
+
+          <radialGradient id="meniscusCaustic" cx="8%" cy="50%" r="82%" fx="0%" fy="50%">
+            <stop offset="0%" stop-color="#1FE0CA" stop-opacity="0.58" />
+            <stop offset="30%" stop-color="#13B8A5" stop-opacity="0.32" />
+            <stop offset="62%" stop-color="#0B8C7D" stop-opacity="0.12" />
+            <stop offset="100%" stop-color="#088779" stop-opacity="0" />
+          </radialGradient>
+
+          <linearGradient id="wallRefractionBleed" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1ED9C3" stop-opacity="0.82" />
+            <stop offset="40%" stop-color="#13B5A2" stop-opacity="0.54" />
+            <stop offset="75%" stop-color="#0B8C7D" stop-opacity="0.20" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+          </linearGradient>
+
+          <linearGradient id="appleDiagonalSpecular" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4EE8D7" stop-opacity="0.72" />
+            <stop offset="22%" stop-color="#FFFFFF" stop-opacity="0.88" />
+            <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0.14" />
+            <stop offset="62%" stop-color="#FFFFFF" stop-opacity="0.10" />
+            <stop offset="82%" stop-color="#F4EBD0" stop-opacity="0.66" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.94" />
+          </linearGradient>
+
+          <linearGradient id="appleInnerWallRim" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#18C7B3" stop-opacity="0.64" />
+            <stop offset="28%" stop-color="#FFFFFF" stop-opacity="0.36" />
+            <stop offset="55%" stop-color="#000000" stop-opacity="0.10" />
+            <stop offset="85%" stop-color="#B8FFF6" stop-opacity="0.38" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.70" />
+          </linearGradient>
+
+          <linearGradient id="topArcHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+            <stop offset="20%" stop-color="#FFFFFF" stop-opacity="0.55" />
+            <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.94" />
+            <stop offset="80%" stop-color="#FFFFFF" stop-opacity="0.45" />
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+          </linearGradient>
+
+          <linearGradient id="bottomBounceHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#B8FFF6" stop-opacity="0" />
+            <stop offset="28%" stop-color="#D6FFFA" stop-opacity="0.34" />
+            <stop offset="52%" stop-color="#FFFFFF" stop-opacity="0.62" />
+            <stop offset="76%" stop-color="#D6FFFA" stop-opacity="0.30" />
+            <stop offset="100%" stop-color="#B8FFF6" stop-opacity="0" />
+          </linearGradient>
+
+          <filter id="softGlassBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.4" />
+          </filter>
+
+          <filter id="meniscusGlowBlur" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="2.5" />
+          </filter>
+
+          <clipPath id="dropletClip">
+            <rect x="0" y="0" width="76" height="50" rx="25" ry="25" />
+          </clipPath>
+        </defs>
+
+        <g clip-path="url(#trackClip)">
+          <path id="liquidBody" d="" fill="url(#turquoiseFrontGrad)" />
+          <path id="liquidDepth" d="" fill="url(#liquidDepthGrad)" />
+
+          <g id="glassDroplet" transform="translate(2, 2)">
+            <g clip-path="url(#dropletClip)">
+              <rect id="glassVolumeLayer" x="0" y="0" width="76" height="50" rx="25" ry="25" fill="url(#smoothGlassVolume)" />
+              <rect id="dropletInnerGlow" x="0" y="0" width="76" height="50" rx="25" ry="25" fill="url(#meniscusCaustic)" opacity="0" />
+              <path id="wallRefractionTop" d="M 22 2.6 L 54 2.6" fill="none" stroke="url(#wallRefractionBleed)" stroke-width="3.2" stroke-linecap="round" opacity="0" filter="url(#softGlassBlur)" />
+              <path id="wallRefractionBottom" d="M 22 47.4 L 56 47.4" fill="none" stroke="url(#wallRefractionBleed)" stroke-width="3.4" stroke-linecap="round" opacity="0" filter="url(#softGlassBlur)" />
+              <path id="meniscusHalo" d="M 24 2.5 A 22.5 22.5 0 0 0 24 47.5" fill="none" stroke="#18C9B5" stroke-width="5.0" stroke-linecap="round" opacity="0" filter="url(#meniscusGlowBlur)" />
+              <path id="meniscusDepthArc" d="M 24.4 2.8 A 22.2 22.2 0 0 0 24.4 47.2" fill="none" stroke="#088072" stroke-width="1.6" stroke-linecap="round" opacity="0" />
+              <path d="M 16 4.0 Q 38 2.0 60 4.0" fill="none" stroke="url(#topArcHighlight)" stroke-width="2.1" stroke-linecap="round" filter="url(#softGlassBlur)" />
+              <path d="M 21 2.3 Q 38 1.4 55 2.3" fill="none" stroke="url(#topArcHighlight)" stroke-width="0.9" stroke-linecap="round" />
+              <path d="M 20 47.0 Q 38 48.3 56 47.0" fill="none" stroke="url(#bottomBounceHighlight)" stroke-width="1.6" stroke-linecap="round" filter="url(#softGlassBlur)" />
+            </g>
+
+            <rect x="2.6" y="2.6" width="70.8" height="44.8" rx="22.4" ry="22.4" fill="none" stroke="url(#appleInnerWallRim)" stroke-width="1.15" />
+            <rect x="0.65" y="0.65" width="74.7" height="48.7" rx="24.35" ry="24.35" fill="none" stroke="url(#appleDiagonalSpecular)" stroke-width="1.35" />
+          </g>
+        </g>
+      </svg>
+
+      <div class="glass-rim-overlay"></div>
+      <div class="glass-specular-border"></div>
+    </div>
+
+    <div class="widget-rim-overlay"></div>
+    <div class="widget-specular-border"></div>
+  </div>
+
+  <script>
+    const TARGET_MINUTES = 15;
+    const TARGET_DURATION_MS = TARGET_MINUTES * 60 * 1000;
+    const FILL_TRANSITION_MS = 850;
+    let startTime = Date.now();
+    let completedAt = null;
+    let soundPlayed = false;
+
+    const capsuleEl = document.getElementById('capsule');
+    const pctEl = document.getElementById('pct');
+    const subEl = document.getElementById('sub');
+    const titleEl = document.getElementById('title');
+    const liquidBodyEl = document.getElementById('liquidBody');
+    const liquidDepthEl = document.getElementById('liquidDepth');
+    const glassDropletEl = document.getElementById('glassDroplet');
+    const glassVolumeLayerEl = document.getElementById('glassVolumeLayer');
+    const dropletInnerGlowEl = document.getElementById('dropletInnerGlow');
+    const wallRefractionTopEl = document.getElementById('wallRefractionTop');
+    const wallRefractionBottomEl = document.getElementById('wallRefractionBottom');
+    const meniscusHaloEl = document.getElementById('meniscusHalo');
+    const meniscusDepthArcEl = document.getElementById('meniscusDepthArc');
+
+    let audioCtx = null;
+    function initAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    window.addEventListener('click', initAudioContext, { once: true });
+
+    function playGentleChime() {
+      initAudioContext();
+      triggerSingleChime(0);
+      setTimeout(() => {
+        triggerSingleChime(1);
+      }, 1350);
+    }
+
+    function triggerSingleChime(repeatIndex) {
+      try {
+        initAudioContext();
+        const now = audioCtx.currentTime;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1150, now);
+        filter.connect(audioCtx.destination);
+
+        const notes = [
+          { freq: 392.00, delay: 0.00, peak: 0.065, decay: 2.0 },
+          { freq: 493.88, delay: 0.16, peak: 0.055, decay: 2.2 },
+          { freq: 587.33, delay: 0.32, peak: 0.060, decay: 2.5 },
+          { freq: 739.99, delay: 0.48, peak: 0.045, decay: 2.8 }
+        ];
+
+        const masterScale = repeatIndex === 0 ? 1.0 : 0.85;
+
+        notes.forEach((n) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(n.freq, now + n.delay);
+
+          const targetPeak = n.peak * masterScale;
+          gain.gain.setValueAtTime(0.0001, now + n.delay);
+          gain.gain.linearRampToValueAtTime(targetPeak, now + n.delay + 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + n.delay + n.decay);
+
+          osc.connect(gain);
+          gain.connect(filter);
+          osc.start(now + n.delay);
+          osc.stop(now + n.delay + n.decay + 0.05);
+        });
+      } catch (e) {
+        console.log('Ses çalınamadı:', e);
+      }
+    }
+
+    function formatTime(ms) {
+      const totalSec = Math.max(0, Math.floor(ms / 1000));
+      const mins = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const secs = String(Math.floor(totalSec % 60)).padStart(2, '0');
+      return `${mins}:${secs}`;
+    }
+
+    function buildLiquidPath(dropletX, ratio, fillInside) {
+      if (dropletX <= 2.15 || ratio <= 0.001) return '';
+      if (fillInside >= 0.999) return 'M 2 2 L 318 2 L 318 52 L 2 52 Z';
+
+      const r = 25;
+      const cy = 27;
+      const midX = dropletX + fillInside * 76;
+      const curvature = 1 - 2 * fillInside;
+
+      const topEdgeX = midX + curvature * r;
+      let path = `M 2 2 L ${topEdgeX.toFixed(2)} 2 `;
+
+      for (let y = 2; y <= 52; y += 1) {
+        const dy = y - cy;
+        const dx = Math.sqrt(Math.max(0, r * r - dy * dy));
+        const arcX = midX + curvature * (r - dx) + 0.25;
+        path += `L ${arcX.toFixed(2)} ${y} `;
+      }
+
+      path += `L 2 52 Z`;
+      return path;
+    }
+
+    function updateFrame() {
+      const now = Date.now();
+      const elapsed = Math.min(now - startTime, TARGET_DURATION_MS);
+      const remaining = TARGET_DURATION_MS - elapsed;
+      const ratio = elapsed / TARGET_DURATION_MS;
+      const progress = Math.min(100, ratio * 100);
+
+      const baseW = 76;
+      const minX = 2;
+      const maxX = 320 - baseW - 2;
+
+      const dropletX = minX + ratio * (maxX - minX);
+      let fillInside = 0;
+
+      if (elapsed >= TARGET_DURATION_MS) {
+        if (!completedAt) completedAt = now;
+        const fillProgress = Math.min(1, (now - completedAt) / FILL_TRANSITION_MS);
+        fillInside = 1 - Math.pow(1 - fillProgress, 3);
+      }
+
+      const fillPath = buildLiquidPath(dropletX, ratio, fillInside);
+      liquidBodyEl.setAttribute('d', fillPath);
+      liquidDepthEl.setAttribute('d', fillPath);
+
+      glassDropletEl.setAttribute('transform', `translate(${dropletX.toFixed(2)}, 2)`);
+      glassVolumeLayerEl.setAttribute('opacity', (1 - fillInside).toFixed(2));
+
+      const liquidPresence = Math.min(1, ratio * 14) * (1 - fillInside * 0.85);
+      dropletInnerGlowEl.setAttribute('opacity', (1.0 * liquidPresence).toFixed(2));
+      wallRefractionTopEl.setAttribute('opacity', (0.85 * liquidPresence).toFixed(2));
+      wallRefractionBottomEl.setAttribute('opacity', (0.95 * liquidPresence).toFixed(2));
+      meniscusHaloEl.setAttribute('opacity', (0.78 * liquidPresence).toFixed(2));
+      meniscusDepthArcEl.setAttribute('opacity', (0.75 * liquidPresence).toFixed(2));
+
+      if (elapsed < TARGET_DURATION_MS) {
+        pctEl.textContent = `${Math.floor(progress)}%`;
+        subEl.textContent = `Kalan Süre → ${formatTime(remaining)}`;
+      } else {
+        pctEl.textContent = '100%';
+        pctEl.classList.add('completed');
+        subEl.classList.add('completed');
+        capsuleEl.classList.add('completed');
+        titleEl.innerHTML = 'Pratik Tamamlandı!<br>Mola Vakti';
+        subEl.textContent = 'Kalan Süre → 00:00';
+
+        if (!soundPlayed) {
+          soundPlayed = true;
+          playGentleChime();
+        }
+      }
+
+      if (!completedAt || now - completedAt <= FILL_TRANSITION_MS + 50) {
+        requestAnimationFrame(updateFrame);
+      }
+    }
+
+    requestAnimationFrame(updateFrame);
+  </script>
+</body>
+</html>
